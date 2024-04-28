@@ -1,5 +1,4 @@
-from bluepy import btle
-from bluepy.btle import BTLEInternalError, BTLEDisconnectError
+from bluepy3 import btle
 from time import sleep
 
 class StaggEKGDelegate(btle.DefaultDelegate):
@@ -39,7 +38,7 @@ class StaggEKG(btle.Peripheral):
             try:
                 super().__init__(self.MAC)
                 break
-            except (BTLEInternalError, BTLEDisconnectError) as e:
+            except (btle.BTLEInternalError, btle.BTLEDisconnectError) as e:
                 attempts += 1
                 print("Failed to connect... Attempt: %s Error: %s" % (attempts, e))
                 print("Retrying in 5 seconds...")
