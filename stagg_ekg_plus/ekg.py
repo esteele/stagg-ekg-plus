@@ -38,7 +38,7 @@ class StaggEKG(btle.Peripheral):
             try:
                 super().__init__(self.MAC)
                 break
-            except (btle.BTLEInternalError, btle.BTLEDisconnectError) as e:
+            except (btle.BTLEInternalError, btle.BTLEConnectError) as e:
                 attempts += 1
                 print("Failed to connect... Attempt: %s Error: %s" % (attempts, e))
                 print("Retrying in 5 seconds...")
@@ -61,7 +61,7 @@ class StaggEKG(btle.Peripheral):
             self.connect()
         try:
             self.characteristic.write(bytes.fromhex("efdd0a0001{hex}{hex}01".format(hex=hex(temp)[2:])), withResponse=False)
-        except (BTLEInternalError, BTLEDisconnectError) as e:
+        except (btle.BTLEInternalError, btle.BTLEConnectError) as e:
             print("Connection error! Reconnecting... %s" % e)
             self.connect()
             self.characteristic.write(bytes.fromhex("efdd0a0001{hex}{hex}01".format(hex=hex(temp)[2:])), withResponse=False)
@@ -84,7 +84,7 @@ class StaggEKG(btle.Peripheral):
         current_temp = 32
         try:
            current_temp =  self._get_temps()[0][0]
-        except (BTLEInternalError, BTLEDisconnectError) as e:
+        except (btle.BTLEInternalError, btle.BTLEConnectError) as e:
             print("Connection error! Reconnecting... Error: %s" % e)
             self.connect()
             try:
@@ -99,7 +99,7 @@ class StaggEKG(btle.Peripheral):
         target_temp = 212
         try:
             target_temp = self._get_temps()[1][0]
-        except (BTLEInternalError, BTLEDisconnectError) as e:
+        except (btle.BTLEInternalError, btle.BTLEConnectError) as e:
             print("Connection error! Reconnecting... %s" % e)
             self.connect()
             try:
@@ -115,7 +115,7 @@ class StaggEKG(btle.Peripheral):
             self.connect()
         try:
             self.characteristic.write(bytes.fromhex("efdd0a0000010100"), withResponse=False)
-        except (BTLEInternalError, BTLEDisconnectError) as e:
+        except (btle.BTLEInternalError, btle.BTLEConnectError) as e:
             print("Connection error! Reconnecting... %s" % e)
             self.connect()
             self.characteristic.write(bytes.fromhex("efdd0a0000010100"), withResponse=False)
@@ -125,7 +125,7 @@ class StaggEKG(btle.Peripheral):
             self.connect()
         try:
             self.characteristic.write(bytes.fromhex("efdd0a0400000400"), withResponse=False)
-        except (BTLEInternalError, BTLEDisconnectError) as e:
+        except (btle.BTLEInternalError, btle.BTLEConnectError) as e:
             print("Connection error! Reconnecting... %s" % e)
             self.connect()
             self.characteristic.write(bytes.fromhex("efdd0a0400000400"), withResponse=False)
